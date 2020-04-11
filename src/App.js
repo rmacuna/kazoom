@@ -10,6 +10,7 @@ import GlobalStyles from "./global.styles";
 import  AuthProvider from "./utils/context/AuthContext";
 import SignIn from "./containers/login/Login";
 import Home from './containers/home/Home'
+import Register from "./containers/register/Register.jsx"
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Switch>
           <Route component={SignIn} exact path="/" />
           <Route component={Home} exact path="/app" />
+          <Route component={Register} exact path="/register"/>
         </Switch>
       </AuthProvider>
     </ChakraThemeProvider>
