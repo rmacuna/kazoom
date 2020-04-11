@@ -21,21 +21,17 @@ import {
 import { firebase } from "./services/firebase";
 
 function App() {
-  useEffect(() => {
-    firebase.auth().onAuthStateChanged(
-      (user) => {
-        // TODO: go to app page if user
-        console.log({
-          user,
-        });
-      },
-      (error) => {
-        console.error(error);
-      }
-    );
+  const appHistory = useHistory();
 
-    return () => {};
-  }, []);
+  firebase.auth().onAuthStateChanged(
+    (user) => {
+      // TODO: go to app page if user
+      console.log({ user });
+    },
+    (error) => {
+      console.error(error);
+    }
+  );
 
   return (
     <ChakraThemeProvider theme={theme}>
