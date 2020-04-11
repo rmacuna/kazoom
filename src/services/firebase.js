@@ -16,12 +16,3 @@ firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
 
 export { firebase };
 export const db = firebase.firestore();
-
-firebase.auth().onAuthStateChanged(
-  (user) => {
-    console.log(user.uid);
-  },
-  (error) => {
-    console.error(error);
-  }
-);
