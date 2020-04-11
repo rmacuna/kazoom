@@ -14,6 +14,7 @@ import Register from "./containers/register/Register.jsx";
 import { Route, Switch, useHistory } from "react-router-dom";
 
 import { firebase } from "./services/firebase";
+import base from "./theme/base";
 
 function App() {
   const appHistory = useHistory();
@@ -31,7 +32,7 @@ function App() {
   }, []);
 
   return (
-    <ChakraThemeProvider theme={theme}>
+    <ChakraThemeProvider theme={base}>
       <CSSReset />
       <Global styles={GlobalStyles} />
       <AuthProvider>
