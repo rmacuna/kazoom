@@ -1,5 +1,6 @@
 import React from "react";
 import { Flex, Stack, Box, SimpleGrid, Text, Input, Button } from "@chakra-ui/core";
+import Camera from "../../components/camera/Camera";
 function Home() {
   return (
     <SimpleGrid columns={2} spacing={0}>
@@ -11,7 +12,9 @@ function Home() {
           <Input fontSize="sm" width="100%" placeholder="Buscar contactos" />
         </Stack>
       </Flex>
-      <Flex height="100vh"></Flex>
+      <Flex height="100vh">
+        <Camera />
+      </Flex>
     </SimpleGrid>
   );
 }
