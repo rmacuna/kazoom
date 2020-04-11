@@ -4,14 +4,18 @@ import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 // import { ColorModeProvider } from "@chakra-ui/core";
+import { BrowserRouter as Router} from 'react-router-dom'
 import { Provider } from "react-redux";
 import store from "./store";
+import history from "./history";
 
 ReactDOM.render(
   <Provider store={store}>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
+    <Router history={history}>
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    </Router>
   </Provider>,
   document.getElementById("root")
 );

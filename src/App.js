@@ -10,13 +10,8 @@ import AuthProvider from "./utils/context/AuthContext";
 import SignIn from "./containers/login/Login";
 import Home from "./containers/home/Home";
 import Register from "./containers/register/Register.jsx";
-import history from "./history";
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  useHistory,
-} from "react-router-dom";
+
+import { Route, Switch, useHistory } from "react-router-dom";
 
 import { firebase } from "./services/firebase";
 
@@ -37,15 +32,13 @@ function App() {
     <ChakraThemeProvider theme={theme}>
       <CSSReset />
       <Global styles={GlobalStyles} />
-      <Router history={history}>
-        <AuthProvider>
-          <Switch>
-            <Route component={SignIn} exact path="/" />
-            <Route component={Home} exact path="/app" />
-            <Route component={Register} exact path="/register" />
-          </Switch>
-        </AuthProvider>
-      </Router>
+      <AuthProvider>
+        <Switch>
+          <Route component={SignIn} exact path="/" />
+          <Route component={Home} exact path="/app" />
+          <Route component={Register} exact path="/register" />
+        </Switch>
+      </AuthProvider>
     </ChakraThemeProvider>
   );
 }
