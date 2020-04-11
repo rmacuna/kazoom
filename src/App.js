@@ -7,7 +7,7 @@ import {
 } from "@chakra-ui/core";
 import { Global } from "@emotion/core";
 import GlobalStyles from "./global.styles";
-import { AuthContext } from "./utils/context/AuthContext";
+import  AuthProvider from "./utils/context/AuthContext";
 import SignIn from "./containers/login/Login";
 
 function App() {
@@ -15,11 +15,11 @@ function App() {
     <ChakraThemeProvider theme={theme}>
       <CSSReset />
       <Global styles={GlobalStyles} />
-      <AuthContext>
+      <AuthProvider>
         <Switch>
           <Route component={SignIn} exact path="/" />
         </Switch>
-      </AuthContext>
+      </AuthProvider>
     </ChakraThemeProvider>
   );
 }
