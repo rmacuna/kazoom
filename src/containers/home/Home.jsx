@@ -1,5 +1,13 @@
 import React from "react";
-import { Flex, Stack, Box, SimpleGrid, Text, Input, Button } from "@chakra-ui/core";
+import {
+  Flex,
+  Stack,
+  Box,
+  SimpleGrid,
+  Text,
+  Input,
+  Button,
+} from "@chakra-ui/core";
 import Camera from "../../components/camera/Camera";
 function Home() {
   return (
@@ -13,7 +21,10 @@ function Home() {
         </Stack>
       </Flex>
       <Flex height="100vh">
-        <Camera />
+        <SimpleGrid columns={2} spacing={4}>
+          <Camera />
+          <Camera />
+        </SimpleGrid>
       </Flex>
     </SimpleGrid>
   );
