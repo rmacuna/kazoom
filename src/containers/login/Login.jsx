@@ -44,9 +44,7 @@ const Signin = () => {
         setSubmitting(false);
     },
     validationSchema: Yup.object({
-      email: Yup.string()
-        .email("Invalid email address")
-        .required("Required Field"),
+      phone: Yup.number().required("Required Field"),
       password: Yup.string().required("Please enter your password"),
     }),
   });
@@ -67,19 +65,19 @@ const Signin = () => {
       >
         <Flex borderBottomWidth="1px" p={4}>
           <Text as="h1" fontWeight="600" fontSize="lg">
-            Please sign in
+            Signin to kazoom
           </Text>
         </Flex>
         <form autoComplete={false} onSubmit={formik.handleSubmit}>
           <Stack p={4} spacing={2}>
             <FormControl>
-              <FormLabel htmlFor="email">Email address</FormLabel>
+              <FormLabel htmlFor="number">Phone number</FormLabel>
               <Input
-                type="email"
+                type="number"
                 autoComplete="false"
-                id="email"
-                placeholder="Escribe tu nombre "
-                {...formik.getFieldProps("email")}
+                id="number"
+                placeholder="Please type your phone number"
+                {...formik.getFieldProps("phone")}
               />
             </FormControl>
             {formik.touched.email && formik.errors.email ? (
