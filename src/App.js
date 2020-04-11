@@ -1,5 +1,4 @@
-import React from "react";
-import { Route, Switch } from "react-router-dom";
+import React, { useEffect } from "react";
 import {
   ThemeProvider as ChakraThemeProvider,
   CSSReset,
@@ -12,9 +11,32 @@ import SignIn from "./containers/login/Login";
 import Home from "./containers/home/Home";
 import Register from "./containers/register/Register.jsx";
 import history from "./history";
-import { BrowserRouter as Router } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  useHistory,
+} from "react-router-dom";
+
+import { firebase } from "./services/firebase";
 
 function App() {
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged(
+      (user) => {
+        // TODO: go to app page if user
+        console.log({
+          user,
+        });
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+
+    return () => {};
+  }, []);
+
   return (
     <ChakraThemeProvider theme={theme}>
       <CSSReset />
