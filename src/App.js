@@ -18,15 +18,19 @@ import { firebase } from "./services/firebase";
 function App() {
   const appHistory = useHistory();
 
-  firebase.auth().onAuthStateChanged(
-    (user) => {
-      // TODO: go to app page if user
-      console.log({ user });
-    },
-    (error) => {
-      console.error(error);
-    }
-  );
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged(
+      (user) => {
+        console.log({ user });
+        appHistory.push(user ? "/app" : "");
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+
+    return () => {};
+  }, []);
 
   return (
     <ChakraThemeProvider theme={theme}>
