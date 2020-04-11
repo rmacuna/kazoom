@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ThemeProvider as ChakraThemeProvider,
   CSSReset,
@@ -17,18 +17,20 @@ import { firebase } from "./services/firebase";
 
 function App() {
   const appHistory = useHistory();
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged(
       (user) => {
         console.log("user: ", user);
+        // setUser(user)
         appHistory.push(user ? "/app" : "/");
       },
       (error) => {
         console.error(error);
       }
     );
-  });
+  }, []);
 
   return (
     <ChakraThemeProvider theme={theme}>
