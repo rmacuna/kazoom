@@ -140,7 +140,7 @@ const Register = () => {
               mt={4}
               variantColor="whatsapp"
             >
-              Sign in
+              Sign up
             </Button>
           </Stack>
         </form>
