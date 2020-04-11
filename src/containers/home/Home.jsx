@@ -14,12 +14,22 @@ import {
 import Camera from "../../components/camera/Camera";
 import { firebase } from "../../services/firebase";
 
+import { useDispatch } from 'react-redux'
+import { update } from "../src/store/actions";
+
 const signOut = async () => {
   await firebase.auth().signOut();
 };
 
 function Home() {
-  const [countUsers, setCountUsers] = React.useState(1);
+
+  const dispatch = useDispatch()
+  const [countUsers, setCountUsers] = React.useState(1)
+
+  signOut(){
+    firebase.auth().signOut().then(data => { dispatch(erase) })
+  }
+
   return (
     <Flex width="100%" backgroundColor="#1a1f2c">
       <Flex p={4} height="100vh" flex={0.3} bg="gray.700">
