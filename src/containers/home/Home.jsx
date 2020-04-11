@@ -8,7 +8,14 @@ import {
   Input,
   Button,
 } from "@chakra-ui/core";
+
 import Camera from "../../components/camera/Camera";
+import { firebase } from "../../services/firebase";
+
+const signOut = async () => {
+  await firebase.auth().signOut();
+};
+
 function Home() {
   return (
     <SimpleGrid columns={2} spacing={0}>
@@ -19,6 +26,16 @@ function Home() {
           </Text>
           <Input fontSize="sm" width="100%" placeholder="Buscar contactos" />
         </Stack>
+
+        <Button
+          variantColor="teal"
+          variant="solid"
+          position="absolute"
+          bottom="10px"
+          onClick={() => signOut()}
+        >
+          Cerrar sesión
+        </Button>
       </Flex>
       <Flex height="100vh">
         <SimpleGrid columns={2} spacing={4}>
