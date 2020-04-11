@@ -7,6 +7,13 @@ import {
   FormControl,
   FormLabel,
   Input,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  useDisclosure,
+  ModalBody,
+  ModalCloseButton,
 } from "@chakra-ui/core";
 // import { apiRequest } from "../../helpers/authHelper";
 import { useFormik } from "formik";
@@ -15,23 +22,40 @@ import { AuthContext } from "../../utils/context/AuthContext";
 import { firebase } from "./../../services/firebase";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 
+const SignInModal = (props) => {
+  return (
+    <Modal isCentered size="360px" {...props}>
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>Signin to Kazoom</ModalHeader>
+        <ModalCloseButton></ModalCloseButton>
+        <ModalBody p="0">
+          <StyledFirebaseAuth
+            firebaseAuth={firebase.auth()}
+            uiConfig={{
+              signInFlow: "popup",
+              signInOptions: [
+                {
+                  provider: firebase.auth.PhoneAuthProvider.PROVIDER_ID,
+                  defaultCountry: "CO",
+                },
+              ],
+              callbacks: {
+                signInSuccessWithAuthResult: () => false,
+              },
+            }}
+          ></StyledFirebaseAuth>
+        </ModalBody>
+      </ModalContent>
+    </Modal>
+  );
+};
+
 const Signin = () => {
   const auth = React.useContext(AuthContext);
   const [loading, setLoading] = useState(false);
-  // const { colorMode, toggleColorMode } = useColorMode();
-  // const authHandler = async (values) => {
-  //   try {
-  //     setLoading(true);
-  //     const userData = await apiRequest(
-  //       "https://jsonplaceholder.typicode.com/users",
-  //       "post",
-  //       { email: values.email, password: values.password }
-  //     );
-  //     return userData;
-  //   } catch (err) {
-  //     setLoading(false);
-  //   }
-  // };
+  const { isOpen, onClose, onOpen, onToggle } = useDisclosure(false);
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -65,70 +89,16 @@ const Signin = () => {
         borderColor="gray.200"
         backgroundColor="white"
       >
-        <Flex borderBottomWidth="1px" p={4}>
-          <Text as="h1" fontWeight="600" fontSize="lg">
-            Signin to kazoom
-          </Text>
-        </Flex>
+        <Flex align="center" justify="center" borderBottomWidth="1px" p={4}>
+          <Button onClick={() => onOpen()}>Signin to Kazoom</Button>
 
-        <Flex align="center" justify="center" p="6">
-          <StyledFirebaseAuth
-            firebaseAuth={firebase.auth()}
-            uiConfig={{
-              signInFlow: "popup",
-              signInOptions: [
-                {
-                  provider: firebase.auth.PhoneAuthProvider.PROVIDER_ID,
-                  defaultCountry: "CO",
-                },
-              ],
-              callbacks: {
-                signInSuccessWithAuthResult: () => false,
-              },
-            }}
-          ></StyledFirebaseAuth>
+          <SignInModal
+            isOpen={isOpen}
+            onClose={onClose}
+            onOpen={onOpen}
+            onToggle={onToggle}
+          ></SignInModal>
         </Flex>
-
-        {/** <form autoComplete={false} onSubmit={formik.handleSubmit}>
-          <Stack p={4} spacing={2}>
-            <FormControl>
-              <FormLabel htmlFor="number">Phone number</FormLabel>
-              <Input
-                type="number"
-                autoComplete="false"
-                id="number"
-                placeholder="Please type your phone number"
-                {...formik.getFieldProps("phone")}
-              />
-            </FormControl>
-            {formik.touched.email && formik.errors.email ? (
-              <div>{formik.errors.email}</div>
-            ) : null}
-            <FormControl>
-              <FormLabel htmlFor="password">Password</FormLabel>
-              <Input
-                autoComplete="new-password"
-                type="password"
-                id="password"
-                placeholder="Escribe tu contraeña"
-                {...formik.getFieldProps("password")}
-              />
-            </FormControl>
-            {formik.touched.password && formik.errors.password ? (
-              <div>{formik.errors.password}</div>
-            ) : null}
-            <Button
-              isLoading={formik.isSubmitting}
-              loadingText="Submitting"
-              type="submit"
-              mt={4}
-              variantColor="whatsapp"
-            >
-              Sign in
-            </Button>
-          </Stack>
-        </form>
-            */}
       </Stack>
     </Flex>
   );
