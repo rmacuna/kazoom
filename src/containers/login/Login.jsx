@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Flex,
@@ -12,6 +12,8 @@ import {
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { AuthContext } from "../../utils/context/AuthContext";
+import { firebase } from "./../../services/firebase";
+import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 
 const Signin = () => {
   const auth = React.useContext(AuthContext);
@@ -41,7 +43,7 @@ const Signin = () => {
       //   auth.setAuthStatus({ id, email });
       //   setSubmitting(false);
       // });
-        setSubmitting(false);
+      setSubmitting(false);
     },
     validationSchema: Yup.object({
       phone: Yup.number().required("Required Field"),
@@ -68,7 +70,26 @@ const Signin = () => {
             Signin to kazoom
           </Text>
         </Flex>
-        <form autoComplete={false} onSubmit={formik.handleSubmit}>
+
+        <Flex align="center" justify="center" p="6">
+          <StyledFirebaseAuth
+            firebaseAuth={firebase.auth()}
+            uiConfig={{
+              signInFlow: "popup",
+              signInOptions: [
+                {
+                  provider: firebase.auth.PhoneAuthProvider.PROVIDER_ID,
+                  defaultCountry: "CO",
+                },
+              ],
+              callbacks: {
+                signInSuccessWithAuthResult: () => false,
+              },
+            }}
+          ></StyledFirebaseAuth>
+        </Flex>
+
+        {/** <form autoComplete={false} onSubmit={formik.handleSubmit}>
           <Stack p={4} spacing={2}>
             <FormControl>
               <FormLabel htmlFor="number">Phone number</FormLabel>
@@ -107,6 +128,7 @@ const Signin = () => {
             </Button>
           </Stack>
         </form>
+            */}
       </Stack>
     </Flex>
   );

@@ -1,8 +1,7 @@
-import firebase from "firebase/app";
-import "firebase/auth";
-import "firebase/firestore";
+import firebase from "firebase";
+// import * as firebaseui from "firebaseui";
 
-export const app = firebase.initializeApp({
+firebase.initializeApp({
   apiKey: "AIzaSyCJZ2uipi4dEMHkQHPxqCFApmZMkso5McE",
   authDomain: "gloomg.firebaseapp.com",
   databaseURL: "https://gloomg.firebaseio.com",
@@ -13,5 +12,5 @@ export const app = firebase.initializeApp({
   measurementId: "G-S2RTFM00CC",
 });
 
-export const auth = app.auth();
-export const db = app.firestore();
+export { firebase };
+export const db = firebase.firestore();
