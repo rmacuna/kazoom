@@ -1,10 +1,10 @@
 import { createAction } from '@reduxjs/toolkit'
 
-const increment = createAction('INCREMENT')
-const decrement = createAction('DECREMENT')
+const update = createAction('UPDATE')
+const erase = createAction('ERASE')
 
 
 export {
-  increment,
-  decrement
+  update,
+  erase
 }
