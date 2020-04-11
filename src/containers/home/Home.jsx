@@ -1,6 +1,5 @@
 import React from "react";
-import { Flex, Stack, Box, SimpleGrid, Text, Input } from "@chakra-ui/core";
-
+import { Flex, Stack, Box, SimpleGrid, Text, Input, Button } from "@chakra-ui/core";
 function Home() {
   return (
     <SimpleGrid columns={2} spacing={0}>

@@ -3,7 +3,6 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import { BrowserRouter as Router } from "react-router-dom";
 // import { ColorModeProvider } from "@chakra-ui/core";
 import { Provider } from "react-redux";
 import store from "./store";
@@ -11,9 +10,7 @@ import store from "./store";
 ReactDOM.render(
   <Provider store={store}>
     <React.StrictMode>
-      <Router>
-        <App />
-      </Router>
+      <App />
     </React.StrictMode>
   </Provider>,
   document.getElementById("root")
