@@ -8,41 +8,40 @@ import {
   FormLabel,
   Input,
 } from "@chakra-ui/core";
-import Card from "../../components/card/Card";
-import { apiRequest } from "../../utils/helpers.js";
+// import { apiRequest } from "../../helpers/authHelper";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../../utils/context/AuthContext";
 
 const Signin = () => {
   const auth = React.useContext(AuthContext);
   const [loading, setLoading] = useState(false);
   // const { colorMode, toggleColorMode } = useColorMode();
-  const authHandler = async (values) => {
-    try {
-      setLoading(true);
-      const userData = await apiRequest(
-        "https://jsonplaceholder.typicode.com/users",
-        "post",
-        { email: values.email, password: values.password }
-      );
-      return userData;
-    } catch (err) {
-      setLoading(false);
-      showError(err.message);
-    }
-  };
+  // const authHandler = async (values) => {
+  //   try {
+  //     setLoading(true);
+  //     const userData = await apiRequest(
+  //       "https://jsonplaceholder.typicode.com/users",
+  //       "post",
+  //       { email: values.email, password: values.password }
+  //     );
+  //     return userData;
+  //   } catch (err) {
+  //     setLoading(false);
+  //   }
+  // };
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
     },
     onSubmit: (values, { setSubmitting }) => {
-      authHandler(values).then((data) => {
-        const { id, email } = data;
-        auth.setAuthStatus({ id, email });
+      // authHandler(values).then((data) => {
+      //   const { id, email } = data;
+      //   auth.setAuthStatus({ id, email });
+      //   setSubmitting(false);
+      // });
         setSubmitting(false);
-      });
     },
     validationSchema: Yup.object({
       email: Yup.string()
@@ -60,8 +59,7 @@ const Signin = () => {
       justifyContent="center"
       alignItems="center"
     >
-
-      <Card
+      <Stack
         borderRadius={4}
         minWidth="400px"
         borderColor="gray.200"
@@ -111,7 +109,7 @@ const Signin = () => {
             </Button>
           </Stack>
         </form>
-      </Card>
+      </Stack>
     </Flex>
   );
 };
