@@ -10,8 +10,8 @@ import Webcam from "react-webcam";
 // };
 
 const videoConstraints = {
-  width: 800,
-  height: 600,
+  width: 1280,
+  height: 720,
   facingMode: "user",
 };
 
@@ -20,12 +20,14 @@ const Camera = (props) => {
 
   return (
     <Webcam
+      style={{borderRadius: 10}}
       audio={false}
-      height={720}
+      height="100%"
       ref={webcamRef}
       screenshotFormat="image/jpeg"
-      width={1280}
+      width="100%"
       videoConstraints={videoConstraints}
+      {...props}
     />
   );
 };
