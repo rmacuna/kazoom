@@ -21,16 +21,14 @@ function App() {
   useEffect(() => {
     firebase.auth().onAuthStateChanged(
       (user) => {
-        console.log({ user });
-        appHistory.push(user ? "/app" : "");
+        console.log("user: ", user);
+        appHistory.push(user ? "/app" : "/");
       },
       (error) => {
         console.error(error);
       }
     );
-
-    return () => {};
-  }, []);
+  });
 
   return (
     <ChakraThemeProvider theme={theme}>

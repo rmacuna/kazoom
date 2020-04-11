@@ -35,6 +35,7 @@ const SignInModal = (props) => {
             uiConfig={{
               signInFlow: "popup",
               signInOptions: [
+                firebase.auth.GoogleAuthProvider.PROVIDER_ID,
                 {
                   provider: firebase.auth.PhoneAuthProvider.PROVIDER_ID,
                   defaultCountry: "CO",
