@@ -10,25 +10,20 @@ import {
   Image,
   IconButton,
 } from "@chakra-ui/core";
-
+import { AuthContext } from "../../utils/context/AuthContext";
 import Camera from "../../components/camera/Camera";
 import { firebase } from "../../services/firebase";
-
-import { useDispatch } from 'react-redux'
-import { update } from "../src/store/actions";
 
 const signOut = async () => {
   await firebase.auth().signOut();
 };
 
-function Home() {
+function Home(props) {
+  console.log(props);
 
-  const dispatch = useDispatch()
-  const [countUsers, setCountUsers] = React.useState(1)
+  const [countUsers, setCountUsers] = React.useState(1);
 
-  signOut(){
-    firebase.auth().signOut().then(data => { dispatch(erase) })
-  }
+  function signOut() {}
 
   return (
     <Flex width="100%" backgroundColor="#1a1f2c">
@@ -38,13 +33,13 @@ function Home() {
             Games
           </Text>
           {/* <Input
-            color="white"
-            backgroundColor="gray.600"
-            borderColor="gray.500"
-            fontSize="sm"
-            width="100%"
-            placeholder="Buscar contactos"
-          /> */}
+              color="white"
+              backgroundColor="gray.600"
+              borderColor="gray.500"
+              fontSize="sm"
+              width="100%"
+              placeholder="Buscar contactos"
+            /> */}
 
           <Flex
             mt={5}
@@ -56,7 +51,6 @@ function Home() {
             cursor="pointer"
             alignItems="center"
           >
-            
             <Text color="white" fontWeight="600" fontSize="sm">
               Which song is that?
             </Text>
@@ -87,20 +81,20 @@ function Home() {
         <Flex mt={4} width="100%" justifyContent="center">
           <Stack isInline spacing={3}>
             {/* <IconButton
-              size="lg"
-              icon="add"
-              borderRadius="100%"
-              variantColor="purple"
-            ></IconButton> */}
+                size="lg"
+                icon="add"
+                borderRadius="100%"
+                variantColor="purple"
+              ></IconButton> */}
             <Button size="md" variantColor="purple">
               Unirse a la llamada
             </Button>
             {/* <IconButton
-              size="lg"
-              icon="add"
-              borderRadius="100%"
-              variantColor="purple"
-            ></IconButton> */}
+                size="lg"
+                icon="add"
+                borderRadius="100%"
+                variantColor="purple"
+              ></IconButton> */}
           </Stack>
         </Flex>
       </Flex>

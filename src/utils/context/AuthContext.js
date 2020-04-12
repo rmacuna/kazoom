@@ -1,20 +1,26 @@
-import * as React from "react";
-import useAuth from "../hooks/useAuth";
-import { getStoredUserAuth } from "../../helpers/authHelper";
+import React, { useEffect, useState } from "react";
+import { firebase } from "../../services/firebase";
+
 export const AuthContext = React.createContext({
-  auth: {},
-  setAuthStatus: () => {},
-  setUnauthStatus: () => {},
+  auth: {
+    user: null,
+  },
 });
 
-const { Provider } = AuthContext;
-
 const AuthProvider = ({ children }) => {
-  const { auth, setAuthStatus, setUnauthStatus } = useAuth(getStoredUserAuth());
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged(
+      (user) => setUser(user),
+      (error) => setUser(null)
+    );
+  }, []);
+
   return (
-    <Provider value={{ auth, setAuthStatus, setUnauthStatus }}>
+    <AuthContext.Provider value={{ auth: { user } }}>
       {children}
-    </Provider>
+    </AuthContext.Provider>
   );
 };
 

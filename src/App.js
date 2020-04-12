@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   ThemeProvider as ChakraThemeProvider,
   CSSReset,
@@ -11,33 +11,10 @@ import SignIn from "./containers/login/Login";
 import Home from "./containers/home/Home";
 import Register from "./containers/register/Register.jsx";
 
-import { Route, Switch, useHistory } from "react-router-dom";
-
-import { firebase } from "./services/firebase";
+import { Route, Switch } from "react-router-dom";
 import base from "./theme/base";
 
-import { useDispatch } from 'react-redux'
-import { update } from "../src/store/actions";
-
-
 function App() {
-  const appHistory = useHistory();
-
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    firebase.auth().onAuthStateChanged(
-      (user) => {
-        console.log("user: ", user);
-        dispatch(update())
-        appHistory.push(user ? "/app" : "/");
-      },
-      (error) => {
-        console.error(error);
-      }
-    );
-  }, []);
-
   return (
     <ChakraThemeProvider theme={base}>
       <CSSReset />
