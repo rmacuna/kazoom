@@ -5,7 +5,12 @@ const VideoBox = ({ stream, muted }) => {
 
   videoRef.current.srcOjbect = stream;
 
-  return <video autoPlay muted={muted} ref={videoRef}></video>;
+  return (
+    <div>
+      <audio autoPlay></audio>
+      <video autoPlay muted={muted} ref={videoRef}></video>
+    </div>
+  );
 };
 
 export default VideoBox;
