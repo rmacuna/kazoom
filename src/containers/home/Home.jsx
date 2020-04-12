@@ -9,6 +9,7 @@ import {
   Button,
   Image,
   IconButton,
+  useDisclosure,
 } from "@chakra-ui/core";
 import { AuthContext } from "../../utils/context/AuthContext";
 import Camera from "../../components/camera/Camera";
@@ -16,6 +17,7 @@ import { firebase } from "../../services/firebase";
 import { useContext } from "react";
 import { Redirect } from "react-router-dom";
 import WaitingCode from "../../components/waiting-code/WaitingCode";
+import SongModal from "../../components/song-modal/SongModal";
 
 import { connectToRoom } from "../../services/twilio";
 
