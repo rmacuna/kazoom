@@ -15,6 +15,7 @@ import Camera from "../../components/camera/Camera";
 import { firebase } from "../../services/firebase";
 import { useContext } from "react";
 import { Redirect } from "react-router-dom";
+import WaitingCode from "../../components/waiting-code/WaitingCode";
 
 const signOut = async () => {
   await firebase.auth().signOut();
@@ -24,8 +25,10 @@ function Home(props) {
   console.log(props);
   const { auth } = useContext(AuthContext);
   const [countUsers, setCountUsers] = React.useState(1);
+  const [code, setCode] = React.useState("");
+  const [codeSubmitted, setCodeSubmitted] = React.useState(false);
 
-  if (auth.user === null) return <Redirect to="/" />
+  if (auth.user === null) return <Redirect to="/" />;
 
   return (
     <Flex width="100%" backgroundColor="#1a1f2c">
@@ -34,14 +37,6 @@ function Home(props) {
           <Text as="h1" fontWeight="700" fontSize="27px" color="#fff">
             Games
           </Text>
-          {/* <Input
-              color="white"
-              backgroundColor="gray.600"
-              borderColor="gray.500"
-              fontSize="sm"
-              width="100%"
-              placeholder="Buscar contactos"
-            /> */}
 
           <Flex
             mt={5}
@@ -76,27 +71,19 @@ function Home(props) {
         </Button>
       </Flex>
       <Flex height="100%" p={5} flex={1} flexDirection="column">
-        <SimpleGrid columns={countUsers} spacing={2}>
-          <Camera />
-        </SimpleGrid>
+        {codeSubmitted ? (
+          <SimpleGrid columns={countUsers} spacing={2}>
+            <Camera />
+          </SimpleGrid>
+        ) : (
+          <WaitingCode code={code} setCode={setCode} />
+        )}
 
         <Flex mt={4} width="100%" justifyContent="center">
           <Stack isInline spacing={3}>
-            {/* <IconButton
-                size="lg"
-                icon="add"
-                borderRadius="100%"
-                variantColor="purple"
-              ></IconButton> */}
             <Button size="md" variantColor="purple">
               Unirse a la llamada
             </Button>
-            {/* <IconButton
-                size="lg"
-                icon="add"
-                borderRadius="100%"
-                variantColor="purple"
-              ></IconButton> */}
           </Stack>
         </Flex>
       </Flex>
