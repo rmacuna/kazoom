@@ -1,25 +1,12 @@
-import * as React from "react";
-import {
-  Flex,
-  Stack,
-  Box,
-  SimpleGrid,
-  Text,
-  Input,
-  Button,
-  Image,
-  IconButton,
-  useDisclosure,
-} from "@chakra-ui/core";
+import React, { useContext, useState } from "react";
+import { Flex, Stack, SimpleGrid, Text, Button, Image } from "@chakra-ui/core";
 import { AuthContext } from "../../utils/context/AuthContext";
-import Camera from "../../components/camera/Camera";
 import { firebase } from "../../services/firebase";
-import { useContext } from "react";
 import { Redirect } from "react-router-dom";
+import { connectToRoom } from "../../services/twilio";
+import Room from "../../components/room/Room";
 import WaitingCode from "../../components/waiting-code/WaitingCode";
 import SongModal from "../../components/song-modal/SongModal";
-
-import { connectToRoom } from "../../services/twilio";
 
 const signOut = async () => {
   await firebase.auth().signOut();
@@ -27,11 +14,14 @@ const signOut = async () => {
 
 const Home = () => {
   const { auth } = useContext(AuthContext);
-  const [countUsers, setCountUsers] = React.useState(1);
-  const [codeSubmitted, setCodeSubmitted] = React.useState(false);
+  const [countUsers, setCountUsers] = useState(1);
+  const [codeSubmitted, setCodeSubmitted] = useState(false);
 
-  const joinToRoom = (roomName) => {
-    console.log(roomName);
+  const [room, setRoom] = useState(null);
+
+  const joinToRoom = async (roomName) => {
+    const roomResponse = await connectToRoom(roomName);
+    setRoom(roomResponse);
   };
 
   if (auth.user === null) return <Redirect to="/" />;
@@ -77,10 +67,8 @@ const Home = () => {
         </Button>
       </Flex>
       <Flex height="100%" p={5} flex={1} flexDirection="column">
-        {codeSubmitted ? (
-          <SimpleGrid columns={countUsers} spacing={2}>
-            <Camera />
-          </SimpleGrid>
+        {room ? (
+          <Room countUsers={countUsers} room={room}></Room>
         ) : (
           <WaitingCode joinToRoom={joinToRoom} />
         )}
