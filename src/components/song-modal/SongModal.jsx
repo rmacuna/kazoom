@@ -25,6 +25,9 @@ const SongModal = (props) => {
   const { isOpen, onOpen, onClose } = props;
   const [apiAuth, setApiAuth] = useState(null);
 
+  const handleAuthSpotify = () => {
+    // helper..
+  }
   return (
     <Scale in={isOpen}>
       {(styles) => (
@@ -72,7 +75,7 @@ const SongModal = (props) => {
                   {/* <Flex backgroundColor="#212937" p={4}>
                       
                   </Flex> */}
-                  <Button mt={4} variantColor="whatsapp">¿Permitir a Kazoom usar los servicios de spotify?</Button>
+                  <Button mt={4} as="a" onClick={handleAuthSpotify} variantColor="whatsapp">¿Permitir a Kazoom usar los servicios de spotify?</Button>
                 </Flex>
               )}
             </ModalBody>
