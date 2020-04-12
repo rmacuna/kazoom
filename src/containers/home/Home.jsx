@@ -16,16 +16,19 @@ import { firebase } from "../../services/firebase";
 import { useContext } from "react";
 import { Redirect } from "react-router-dom";
 
+import { connectToRoom } from "../../services/twilio";
+
 const signOut = async () => {
   await firebase.auth().signOut();
 };
 
-function Home(props) {
-  console.log(props);
+const onJoinToRoomClicked = async () => {};
+
+const Home = () => {
   const { auth } = useContext(AuthContext);
   const [countUsers, setCountUsers] = React.useState(1);
 
-  if (auth.user === null) return <Redirect to="/" />
+  if (auth.user === null) return <Redirect to="/" />;
 
   return (
     <Flex width="100%" backgroundColor="#1a1f2c">
@@ -88,7 +91,11 @@ function Home(props) {
                 borderRadius="100%"
                 variantColor="purple"
               ></IconButton> */}
-            <Button size="md" variantColor="purple">
+            <Button
+              size="md"
+              variantColor="purple"
+              onClick={onJoinToRoomClicked}
+            >
               Unirse a la llamada
             </Button>
             {/* <IconButton
@@ -102,6 +109,6 @@ function Home(props) {
       </Flex>
     </Flex>
   );
-}
+};
 
 export default Home;
