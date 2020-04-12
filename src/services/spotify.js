@@ -1,12 +1,32 @@
-import { Client, TrackHandler, PlaylistHandler } from "spotify-sdk";
-import firebase from "./firebase";
+import {firebase} from "./firebase";
+import querystring from 'querystring';  
+import {apiRequest} from '../helpers/apiRequest';
 
-const client = Client.instance;
+var scope = 'streaming';
+var state = firebase.auth().currentUser ? firebase.auth().currentUser.uid : "";
 
-client.settings = {
-  clientId: "a72de9cdda314bc58b043dac09a81c3c",
-  secretId: "2bbce5b5ac1549519adbea4134353899",
-  redirect_uri: "localhost:3000/app",
-  state: firebase.auth().currentUser ? firebase.auth().currentUser.uid : "",
-  scopes: ["streaming", "user-modify-playback-state"],
-};
+const client_id = 'a72de9cdda314bc58b043dac09a81c3c';
+const redirect_uri= 'http://localhost:3000/app';
+
+export const authHandler = async (values) => {
+    try {
+      //setLoading(true);
+      const userData = await apiRequest(
+        'https://accounts.spotify.com/authorize?'+ querystring.stringify({
+      response_type: 'code',
+      client_id: client_id,
+      scope: scope,
+      redirect_uri: redirect_uri,
+      state: state
+    }),
+        'get',
+      );
+      return userData;
+    } catch (err) {
+      //setLoading(false);
+      return err;
+    }
+  };
+
+
+  

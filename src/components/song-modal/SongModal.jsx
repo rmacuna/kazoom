@@ -20,14 +20,16 @@ import {
 
 import SongList from "./song-list/SongList";
 import { useState } from "react";
+import { authHandler  } from "../../services/spotify.js";
 
 const SongModal = (props) => {
   const { isOpen, onOpen, onClose } = props;
   const [apiAuth, setApiAuth] = useState(null);
 
-  const handleAuthSpotify = () => {
-    // helper..
+  const handleAuthSpotify = async () => {
+    await authHandler();
   }
+  
   return (
     <Scale in={isOpen}>
       {(styles) => (
