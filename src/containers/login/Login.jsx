@@ -1,12 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   Button,
   Flex,
-  Text,
   Stack,
-  FormControl,
-  FormLabel,
-  Input,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -53,7 +49,6 @@ const SignInModal = (props) => {
 };
 
 const Signin = () => {
-  const [loading, setLoading] = useState(false);
   const { isOpen, onClose, onOpen, onToggle } = useDisclosure(false);
   const { auth } = useContext(AuthContext);
 

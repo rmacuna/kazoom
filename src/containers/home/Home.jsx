@@ -11,25 +11,31 @@ import {
 import { AuthContext } from "../../utils/context/AuthContext";
 import { firebase } from "../../services/firebase";
 import { Redirect } from "react-router-dom";
-import { connectToRoom } from "../../services/twilio";
 import Room from "../../components/room/Room";
 import WaitingCode from "../../components/waiting-code/WaitingCode";
 import SongModal from "../../components/song-modal/SongModal";
+import { init, join } from "../../services/agora";
 
-const signOut = async () => {
-  await firebase.auth().signOut();
-};
+const signOut = async () => firebase.auth().signOut();
 
 const Home = () => {
   const { auth } = useContext(AuthContext);
-  const [countUsers, setCountUsers] = useState(1);
-  const [codeSubmitted, setCodeSubmitted] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [room, setRoom] = useState(null);
+  const [ready, setReady] = useState(false);
 
   const joinToRoom = async (roomName) => {
-    const roomResponse = await connectToRoom(roomName);
-    setRoom(roomResponse);
+    if (!ready) {
+      await init();
+      setReady(true);
+    }
+
+    const uid = await join(roomName);
+    setRoom(uid);
+  };
+
+  const exitRoom = () => {
+    setRoom(null);
   };
 
   if (auth.user === null) return <Redirect to="/" />;
@@ -43,11 +49,12 @@ const Home = () => {
     >
       <Flex height="100%" p={5} flex={1} flexDirection="column">
         {room ? (
-          <Room countUsers={countUsers} room={room}></Room>
+          <Room uid={room}></Room>
         ) : (
           <WaitingCode joinToRoom={joinToRoom} />
         )}
       </Flex>
+
       {room ? (
         <Flex p={4} height="100vh" flex={0.3} bg="gray.700">
           <Stack width="100%">
@@ -74,6 +81,22 @@ const Home = () => {
                   height={10}
                   src="https://user-images.githubusercontent.com/33750251/59486049-ec63fa80-8e6f-11e9-8d17-9a31324a63e8.png"
                 />
+              </Flex>
+
+              <Flex
+                justifyContent="space-between"
+                borderRadius={6}
+                backgroundColor="gray.600"
+                borderColor="gray.800"
+                padding={4}
+                onClick={exitRoom}
+                cursor="pointer"
+                alignItems="center"
+              >
+                <Text color="white" fontWeight="600" fontSize="sm">
+                  Exit
+                </Text>
+                <Text fontSize="3xl">🛑</Text>
               </Flex>
             </SimpleGrid>
           </Stack>
