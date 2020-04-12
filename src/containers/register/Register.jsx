@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Button,
   Flex,
@@ -7,36 +7,18 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Icon
 } from "@chakra-ui/core";
 // import { apiRequest } from "../../helpers/authHelper";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { AuthContext } from "../../utils/context/AuthContext";
 
 const Register = () => {
-  const auth = React.useContext(AuthContext);
-  const [loading, setLoading] = useState(false);
-  // const { colorMode, toggleColorMode } = useColorMode();
-  // const authHandler = async (values) => {
-  //   try {
-  //     setLoading(true);
-  //     const userData = await apiRequest(
-  //       "https://jsonplaceholder.typicode.com/users",
-  //       "post",
-  //       { email: values.email, password: values.password }
-  //     );
-  //     return userData;
-  //   } catch (err) {
-  //     setLoading(false);
-  //   }
-  // };
   const formik = useFormik({
     initialValues: {
       username: "",
       fullname: "",
-      email:"",
-      password:""
+      email: "",
+      password: "",
     },
     onSubmit: (values, { setSubmitting }) => {
       // authHandler(values).then((data) => {
@@ -44,8 +26,8 @@ const Register = () => {
       //   auth.setAuthStatus({ id, email });
       //   setSubmitting(false);
       // });
-        setSubmitting(false);
-        //console.log("digito:"+values+"and"+ setSubmitting)
+      setSubmitting(false);
+      //console.log("digito:"+values+"and"+ setSubmitting)
     },
     validationSchema: Yup.object({
       email: Yup.string()
@@ -53,7 +35,7 @@ const Register = () => {
         .required("Required Field"),
       password: Yup.string().required("Please enter your password"),
       username: Yup.string().required("Please enter your username"),
-      fullname: Yup.string().required("Please enter your fullname")
+      fullname: Yup.string().required("Please enter your fullname"),
     }),
   });
 
@@ -73,7 +55,7 @@ const Register = () => {
       >
         <Flex borderBottomWidth="1px" p={4} direction="column">
           <Text as="h1" fontWeight="600" fontSize="lg">
-            Welcome to Kazoom ! 
+            Welcome to Kazoom !
           </Text>
           <Text as="h2" fontWeight="300" fontSize="lg">
             a fun way to talk

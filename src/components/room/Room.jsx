@@ -1,48 +1,109 @@
 import React, { useEffect, useState, useRef } from "react";
 import { SimpleGrid } from "@chakra-ui/core";
-import Camera from "../camera/Camera";
-import VideoBox from "../videobox/VideoBox";
+import { client, createLocalStream } from "../../services/agora";
 
 /**
  *
  * @param {Object} props
- * @param {import('twilio-video').Room} props.room
  */
-const Room = ({ countUsers, room }) => {
-  const remoteMediaDivRef = useRef();
-  const [participants, setParticipants] = useState([]);
+const Room = ({ uid }) => {
+  const gridRef = useRef();
+  const [remoteStreams, setRemoteStreams] = useState([]);
 
   useEffect(() => {
-    //room.localParticipant.tracks.forEach((publication) => {
-    // const track = publication.track;
-    // remoteMediaDivRef.current.appendChild(track.attach());
-    //});
+    let localStream = createLocalStream(uid);
 
-    room.on("participantConnected", (participant) => {
-      console.log(`Participant "${participant.identity}" connected`);
+    localStream.init(
+      () => {
+        localStream.play("local-video", { fit: "cover" });
 
-      participant.tracks.forEach((publication) => {
-        if (publication.isSubscribed) {
-          const track = publication.track;
-          remoteMediaDivRef.current.appendChild(track.attach());
+        client.publish(localStream, function (err) {
+          console.error("publish failed", err);
+        });
+      },
+      (err) => {
+        console.error(err);
+      }
+    );
+
+    client.on("stream-added", function (evt) {
+      const remoteStream = evt.stream;
+      const id = remoteStream.getId();
+
+      if (id !== uid) {
+        client.subscribe(remoteStream, function (err) {
+          console.log("stream subscribe failed", err);
+        });
+      }
+
+      console.log("stream-added remote-uid: ", id);
+    });
+
+    client.on("stream-subscribed", function (evt) {
+      const remoteStream = evt.stream;
+      const id = remoteStream.getId();
+
+      const v = document.createElement("div");
+      v.id = "remote_video_" + id;
+      v.style = "height: 300px; width: 300px";
+
+      document.querySelector("#video-grid").appendChild(v);
+      remoteStream.play("remote_video_" + id);
+
+      setRemoteStreams([...remoteStreams, remoteStream]);
+    });
+
+    client.on("stream-removed", function (evt) {
+      const remoteStream = evt.stream;
+      const id = remoteStream.getId();
+
+      remoteStream.stop("remote_video_" + id);
+      document
+        .querySelector("#video-grid")
+        .removeChild(document.querySelector("#remote_video_" + id));
+
+      console.log("CLOSING REMOTE STREAM");
+      console.log("stream-removed remote-uid: ", id);
+
+      setRemoteStreams(remoteStreams.filter((stream) => stream.getId() !== id));
+    });
+
+    return () => {
+      client.leave(
+        function () {
+          localStream.stop();
+          localStream.close();
+
+          // Stop playing the remote streams and remove the views
+          while (remoteStreams.length > 0) {
+            const stream = remoteStreams.shift();
+            const id = stream.getId();
+
+            stream.stop();
+
+            document
+              .querySelector("#video-grid")
+              .removeChild(document.querySelector("#remote_video_" + id));
+          }
+          console.log("client leaves channel success");
+        },
+        function (err) {
+          console.log("channel leave failed");
+          console.error(err);
         }
-      });
-
-      participant.on("trackSubscribed", (track) => {
-        remoteMediaDivRef.current.appendChild(track.attach());
-      });
-    });
-
-    room.once("participantDisconnected", (participant) => {
-      console.log(
-        `Participant "${participant.identity}" has disconnected from the Room`
       );
-    });
+    };
   }, []);
 
   return (
-    <SimpleGrid columns={countUsers} spacing={2}>
-      <div id="remote-media-div" ref={remoteMediaDivRef}></div>
+    <SimpleGrid id="video-grid" columns={0} spacing={2} ref={gridRef}>
+      <div
+        id="local-video"
+        style={{
+          height: "300px",
+          width: "300px",
+        }}
+      ></div>
     </SimpleGrid>
   );
 };
