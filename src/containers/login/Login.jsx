@@ -55,9 +55,15 @@ const SignInModal = (props) => {
 const Signin = () => {
   const [loading, setLoading] = useState(false);
   const { isOpen, onClose, onOpen, onToggle } = useDisclosure(false);
+  const [redir, setRedir] = useState(false);
   const { auth } = useContext(AuthContext);
-
-  if (auth.user !== null) return <Redirect to="/app" />;
+  useEffect(() => {
+    if (auth.user === null) {
+      setRedir(true);
+    }
+  }, []);
+  
+  if (redir) return <Redirect to="/app" />;
 
   return (
     /* Header goes here */

@@ -22,15 +22,12 @@ import SongList from "./song-list/SongList";
 import { useState } from "react";
 import { Link } from 'react-router-dom'
 import { authHandler  } from "../../services/spotify.js";
+import { useEffect } from "react";
 
 const SongModal = (props) => {
-  const { isOpen, onOpen, onClose } = props;
+  const { isOpen, onOpen, onClose, params } = props;
   const [apiAuth, setApiAuth] = useState(null);
-
-  // const handleAuthSpotify =  () => {
-    
-  // }
-  
+  console.log(params)
   return (
     <Scale in={isOpen}>
       {(styles) => (
@@ -39,7 +36,7 @@ const SongModal = (props) => {
           <ModalContent borderRadius={20} width="900px" {...styles}>
             <ModalCloseButton color="white" />
             <ModalBody p={0} minHeight="707px">
-              {apiAuth ? (
+              {params.code ? (
                 <SimpleGrid columns={2} spacing={0} minHeight="707px">
                   <Flex p={5} flexDirection="column">
                     <Text as="h1" fontWeight="bold" fontSize={20} pb={4}>

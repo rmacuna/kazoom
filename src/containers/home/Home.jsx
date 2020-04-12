@@ -20,18 +20,18 @@ const signOut = async () => {
   await firebase.auth().signOut();
 };
 
-function getParams (url) {
+function getParams(url) {
   var params = {};
-  var parser = document.createElement('a');
+  var parser = document.createElement("a");
   parser.href = url;
   var query = parser.search.substring(1);
-  var vars = query.split('&');
+  var vars = query.split("&");
   for (var i = 0; i < vars.length; i++) {
-    var pair = vars[i].split('=');
+    var pair = vars[i].split("=");
     params[pair[0]] = decodeURIComponent(pair[1]);
   }
   return params;
-};
+}
 
 const Home = () => {
   const { auth } = useContext(AuthContext);
@@ -39,20 +39,33 @@ const Home = () => {
   const [codeSubmitted, setCodeSubmitted] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [room, setRoom] = useState(null);
+  const [params, setParams] = useState(null);
+  const [redir, setRedir] = useState(false);
 
   const joinToRoom = async (roomName) => {
     const roomResponse = await connectToRoom(roomName);
     setRoom(roomResponse);
   };
 
-  if (auth.user === null) {
-    const url = window.location.href
-    const params = getParams(url)
-    localStorage.setItem("oauth", params) 
-    return (
-      <Redirect to="/" />
-    )
-  };
+  // const url = window.location.href
+  // const paramsResult = getParams(url)
+  // setParams(paramsResult)
+
+  useEffect(() => {
+    if (auth.user === null) {
+      const url = window.location.href;
+      const paramsResult = getParams(url);
+      if (paramsResult.toString().length > 0) {
+        setParams(paramsResult);
+      } else {
+        setRedir(true);
+      }
+    }
+  }, []);
+
+  if (redir) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <Flex
@@ -109,7 +122,12 @@ const Home = () => {
           >
             Cerrar sesión
           </Button> */}
-      <SongModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
+      <SongModal
+        params={params}
+        isOpen={isOpen}
+        onOpen={onOpen}
+        onClose={onClose}
+      />
     </Flex>
   );
 };
