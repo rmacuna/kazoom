@@ -6,7 +6,7 @@ const SongList = ({ songs }) => {
   return (
     <List m={0} p={0} alignItems="center">
       {songs.map((song, index) => {
-        return <Song key={Date.now()} index={index} song={song} />;
+        return <Song key={index} song={song} />;
       })}
     </List>
   );

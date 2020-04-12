@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
   Flex,
   Stack,
@@ -18,10 +18,25 @@ import { init, join } from "../../services/agora";
 
 const signOut = async () => firebase.auth().signOut();
 
+function getParams(url) {
+  var params = {};
+  var parser = document.createElement("a");
+  parser.href = url;
+  var query = parser.search.substring(1);
+  var vars = query.split("&");
+  for (var i = 0; i < vars.length; i++) {
+    var pair = vars[i].split("=");
+    params[pair[0]] = decodeURIComponent(pair[1]);
+  }
+  return params;
+}
+
 const Home = () => {
   const { auth } = useContext(AuthContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [room, setRoom] = useState(null);
+  const [params, setParams] = useState(null);
+  const [redir, setRedir] = useState(false);
   const [ready, setReady] = useState(false);
 
   const joinToRoom = async (roomName) => {
@@ -34,11 +49,30 @@ const Home = () => {
     setRoom(uid);
   };
 
+  // const url = window.location.href
+  // const paramsResult = getParams(url)
+  // setParams(paramsResult)
   const exitRoom = () => {
     setRoom(null);
   };
 
   if (auth.user === null) return <Redirect to="/" />;
+
+  useEffect(() => {
+    if (auth.user === null) {
+      const url = window.location.href;
+      const paramsResult = getParams(url);
+      if (paramsResult.toString().length > 0) {
+        setParams(paramsResult);
+      } else {
+        setRedir(true);
+      }
+    }
+  }, []);
+
+  if (redir) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <Flex
@@ -112,7 +146,12 @@ const Home = () => {
           >
             Cerrar sesión
           </Button> */}
-      <SongModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
+      <SongModal
+        params={params}
+        isOpen={isOpen}
+        onOpen={onOpen}
+        onClose={onClose}
+      />
     </Flex>
   );
 };
