@@ -20,15 +20,16 @@ import {
 
 import SongList from "./song-list/SongList";
 import { useState } from "react";
+import { Link } from 'react-router-dom'
 import { authHandler  } from "../../services/spotify.js";
 
 const SongModal = (props) => {
   const { isOpen, onOpen, onClose } = props;
   const [apiAuth, setApiAuth] = useState(null);
 
-  const handleAuthSpotify = async () => {
-    await authHandler();
-  }
+  // const handleAuthSpotify =  () => {
+    
+  // }
   
   return (
     <Scale in={isOpen}>
@@ -77,7 +78,7 @@ const SongModal = (props) => {
                   {/* <Flex backgroundColor="#212937" p={4}>
                       
                   </Flex> */}
-                  <Button mt={4} as="a" onClick={handleAuthSpotify} variantColor="whatsapp">¿Permitir a Kazoom usar los servicios de spotify?</Button>
+                  <Button mt={4} as="a" href={authHandler()} variantColor="whatsapp">¿Permitir a Kazoom usar los servicios de spotify?</Button>
                 </Flex>
               )}
             </ModalBody>

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import {
   ThemeProvider as ChakraThemeProvider,
   CSSReset,
@@ -12,9 +12,9 @@ import Register from "./containers/register/Register.jsx";
 
 import { Route, Switch } from "react-router-dom";
 import base from "./theme/base";
+import AppAuth from "./components/app-auth/AppAuth";
 
 function App() {
-
   return (
     <ChakraThemeProvider theme={base}>
       <CSSReset />
@@ -22,8 +22,8 @@ function App() {
       <AuthProvider>
         <Switch>
           <Route component={SignIn} exact path="/" />
-          <Route component={Home} exact path="/app" />
-          <Route component={Register} exact path="/register" />
+          <Route component={Home}  path="/app" />
+          <Route component={Register}  path="/register" />
         </Switch>
       </AuthProvider>
     </ChakraThemeProvider>

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
   Flex,
   Stack,
@@ -20,6 +20,19 @@ const signOut = async () => {
   await firebase.auth().signOut();
 };
 
+function getParams (url) {
+  var params = {};
+  var parser = document.createElement('a');
+  parser.href = url;
+  var query = parser.search.substring(1);
+  var vars = query.split('&');
+  for (var i = 0; i < vars.length; i++) {
+    var pair = vars[i].split('=');
+    params[pair[0]] = decodeURIComponent(pair[1]);
+  }
+  return params;
+};
+
 const Home = () => {
   const { auth } = useContext(AuthContext);
   const [countUsers, setCountUsers] = useState(1);
@@ -32,7 +45,14 @@ const Home = () => {
     setRoom(roomResponse);
   };
 
-  if (auth.user === null) return <Redirect to="/" />;
+  if (auth.user === null) {
+    const url = window.location.href
+    const params = getParams(url)
+    localStorage.setItem("oauth", params) 
+    return (
+      <Redirect to="/" />
+    )
+  };
 
   return (
     <Flex
