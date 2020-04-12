@@ -74,7 +74,7 @@ const Signin = () => {
         backgroundColor="white"
       >
         <Flex align="center" justify="center" borderBottomWidth="1px" p={4}>
-          <Button onClick={() => onOpen()}>Signin to Kazoom</Button>
+          <Button onClick={() => onOpen()}>Join to Kazoom</Button>
 
           <SignInModal
             isOpen={isOpen}
