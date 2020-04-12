@@ -9,14 +9,15 @@ import VideoBox from "../videobox/VideoBox";
  * @param {import('twilio-video').Room} props.room
  */
 const Room = ({ countUsers, room }) => {
-  const remoteMediaDivRef = useRef();
-  const [participants, setParticipants] = useState([]);
+  console.log({ room });
+
+  const [tracks, setTracks] = useState([]);
 
   useEffect(() => {
-    //room.localParticipant.tracks.forEach((publication) => {
-    // const track = publication.track;
-    // remoteMediaDivRef.current.appendChild(track.attach());
-    //});
+    room.localParticipant.tracks.forEach((publication) => {
+      const track = publication.track;
+      setTracks([...tracks, track]);
+    });
 
     room.on("participantConnected", (participant) => {
       console.log(`Participant "${participant.identity}" connected`);
@@ -24,12 +25,12 @@ const Room = ({ countUsers, room }) => {
       participant.tracks.forEach((publication) => {
         if (publication.isSubscribed) {
           const track = publication.track;
-          remoteMediaDivRef.current.appendChild(track.attach());
+          setTracks([...tracks, track]);
         }
       });
 
       participant.on("trackSubscribed", (track) => {
-        remoteMediaDivRef.current.appendChild(track.attach());
+        setTracks([...tracks, track]);
       });
     });
 
@@ -42,7 +43,9 @@ const Room = ({ countUsers, room }) => {
 
   return (
     <SimpleGrid columns={countUsers} spacing={2}>
-      <div id="remote-media-div" ref={remoteMediaDivRef}></div>
+      {tracks.map((track) => (
+        <VideoBox track={track} key={track.sid}></VideoBox>
+      ))}
     </SimpleGrid>
   );
 };

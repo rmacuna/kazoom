@@ -1,14 +1,16 @@
 import React, { useRef } from "react";
 
-const VideoBox = ({ stream, muted }) => {
+const VideoBox = ({ audioTrack, videoTrack }) => {
   const videoRef = useRef();
+  const audioRef = useRef();
 
-  videoRef.current.srcOjbect = stream;
+  if (audioTrack) audioTrack.attach(audioRef);
+  if (videoTrack) videoTrack.attach(videoTrack);
 
   return (
     <div>
-      <audio autoPlay></audio>
-      <video autoPlay muted={muted} ref={videoRef}></video>
+      <audio ref={audioRef}></audio>
+      <video ref={videoRef}></video>
     </div>
   );
 };
