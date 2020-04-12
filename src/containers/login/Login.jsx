@@ -16,11 +16,11 @@ import {
   ModalCloseButton,
 } from "@chakra-ui/core";
 // import { apiRequest } from "../../helpers/authHelper";
-import { useFormik } from "formik";
-import * as Yup from "yup";
 import { AuthContext } from "../../utils/context/AuthContext";
 import { firebase } from "./../../services/firebase";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
+import { useContext } from "react";
+import { Redirect } from "react-router-dom";
 
 const SignInModal = (props) => {
   return (
@@ -53,28 +53,11 @@ const SignInModal = (props) => {
 };
 
 const Signin = () => {
-  const auth = React.useContext(AuthContext);
   const [loading, setLoading] = useState(false);
   const { isOpen, onClose, onOpen, onToggle } = useDisclosure(false);
+  const { auth } = useContext(AuthContext);
 
-  const formik = useFormik({
-    initialValues: {
-      email: "",
-      password: "",
-    },
-    onSubmit: (values, { setSubmitting }) => {
-      // authHandler(values).then((data) => {
-      //   const { id, email } = data;
-      //   auth.setAuthStatus({ id, email });
-      //   setSubmitting(false);
-      // });
-      setSubmitting(false);
-    },
-    validationSchema: Yup.object({
-      phone: Yup.number().required("Required Field"),
-      password: Yup.string().required("Please enter your password"),
-    }),
-  });
+  if (auth.user !== null) return <Redirect to="/app" />;
 
   return (
     /* Header goes here */

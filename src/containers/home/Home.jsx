@@ -13,6 +13,8 @@ import {
 import { AuthContext } from "../../utils/context/AuthContext";
 import Camera from "../../components/camera/Camera";
 import { firebase } from "../../services/firebase";
+import { useContext } from "react";
+import { Redirect } from "react-router-dom";
 
 const signOut = async () => {
   await firebase.auth().signOut();
@@ -20,10 +22,10 @@ const signOut = async () => {
 
 function Home(props) {
   console.log(props);
-
+  const { auth } = useContext(AuthContext);
   const [countUsers, setCountUsers] = React.useState(1);
 
-  function signOut() {}
+  if (auth.user === null) return <Redirect to="/" />
 
   return (
     <Flex width="100%" backgroundColor="#1a1f2c">

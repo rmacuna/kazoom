@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   ThemeProvider as ChakraThemeProvider,
   CSSReset,
-  theme,
 } from "@chakra-ui/core";
 import { Global } from "@emotion/core";
 import GlobalStyles from "./global.styles";
@@ -15,6 +14,7 @@ import { Route, Switch } from "react-router-dom";
 import base from "./theme/base";
 
 function App() {
+
   return (
     <ChakraThemeProvider theme={base}>
       <CSSReset />
