@@ -1,5 +1,13 @@
 import React, { useContext, useState } from "react";
-import { Flex, Stack, SimpleGrid, Text, Button, Image } from "@chakra-ui/core";
+import {
+  Flex,
+  Stack,
+  SimpleGrid,
+  Text,
+  Button,
+  Image,
+  useDisclosure,
+} from "@chakra-ui/core";
 import { AuthContext } from "../../utils/context/AuthContext";
 import { firebase } from "../../services/firebase";
 import { Redirect } from "react-router-dom";
@@ -16,7 +24,7 @@ const Home = () => {
   const { auth } = useContext(AuthContext);
   const [countUsers, setCountUsers] = useState(1);
   const [codeSubmitted, setCodeSubmitted] = useState(false);
-
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [room, setRoom] = useState(null);
 
   const joinToRoom = async (roomName) => {
@@ -41,6 +49,7 @@ const Home = () => {
             backgroundColor="gray.600"
             borderColor="gray.800"
             padding={5}
+            onClick={onOpen}
             cursor="pointer"
             alignItems="center"
           >
@@ -66,6 +75,7 @@ const Home = () => {
           Cerrar sesión
         </Button>
       </Flex>
+      <SongModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
       <Flex height="100%" p={5} flex={1} flexDirection="column">
         {room ? (
           <Room countUsers={countUsers} room={room}></Room>
