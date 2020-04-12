@@ -23,13 +23,14 @@ const signOut = async () => {
   await firebase.auth().signOut();
 };
 
-const onJoinToRoomClicked = async () => {};
-
 const Home = () => {
   const { auth } = useContext(AuthContext);
   const [countUsers, setCountUsers] = React.useState(1);
-  const [code, setCode] = React.useState("");
   const [codeSubmitted, setCodeSubmitted] = React.useState(false);
+
+  const joinToRoom = (roomName) => {
+    console.log(roomName);
+  };
 
   if (auth.user === null) return <Redirect to="/" />;
 
@@ -79,16 +80,8 @@ const Home = () => {
             <Camera />
           </SimpleGrid>
         ) : (
-          <WaitingCode code={code} setCode={setCode} />
+          <WaitingCode joinToRoom={joinToRoom} />
         )}
-
-        <Flex mt={4} width="100%" justifyContent="center">
-          <Stack isInline spacing={3}>
-            <Button size="md" variantColor="purple">
-              Unirse a la llamada
-            </Button>
-          </Stack>
-        </Flex>
       </Flex>
     </Flex>
   );
