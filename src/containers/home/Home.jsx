@@ -52,18 +52,14 @@ const Home = () => {
   // setParams(paramsResult)
 
   useEffect(() => {
-    if (auth.user === null) {
-      const url = window.location.href;
-      const paramsResult = getParams(url);
-      if (paramsResult.toString().length > 0) {
-        setParams(paramsResult);
-      } else {
-        setRedir(true);
-      }
+    const url = window.location.href;
+    const paramsResult = getParams(url);
+    if (paramsResult.toString().length > 0) {
+      setParams(paramsResult);
     }
   }, []);
 
-  if (redir) {
+  if (auth.user === null) {
     return <Redirect to="/" />;
   }
 
@@ -113,15 +109,15 @@ const Home = () => {
         </Flex>
       ) : null}
 
-      {/* <Button
-            variantColor="red"
-            variant="solid"
-            position="absolute"
-            bottom="10px"
-            onClick={() => signOut()}
-          >
-            Cerrar sesión
-          </Button> */}
+      <Button
+        variantColor="red"
+        variant="solid"
+        position="absolute"
+        bottom="10px"
+        onClick={() => signOut()}
+      >
+        Cerrar sesión
+      </Button>
       <SongModal
         params={params}
         isOpen={isOpen}

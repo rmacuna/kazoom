@@ -57,13 +57,8 @@ const Signin = () => {
   const { isOpen, onClose, onOpen, onToggle } = useDisclosure(false);
   const [redir, setRedir] = useState(false);
   const { auth } = useContext(AuthContext);
-  useEffect(() => {
-    if (auth.user === null) {
-      setRedir(true);
-    }
-  }, []);
-  
-  if (redir) return <Redirect to="/app" />;
+
+  if (auth.user !== null) return <Redirect to="/app" />;
 
   return (
     /* Header goes here */
