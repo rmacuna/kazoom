@@ -56,7 +56,6 @@ const Home = () => {
     setRoom(null);
   };
 
-  if (auth.user === null) return <Redirect to="/" />;
 
   useEffect(() => {
     const url = window.location.href;
